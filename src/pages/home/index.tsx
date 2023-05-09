@@ -5,11 +5,12 @@ import {
     CheckBadgeIcon,
 } from "@heroicons/react/20/solid";
 import Breadcrumb from "../../components/Breadcrumb";
+import Table from "../../components/share-ui/table/Table";
 
 const Home = () =>{
     return (
         <div>
-            <div className="pt-0 p-4 rounded-lg">
+            <div className="pt-0 rounded-lg">
                 <Breadcrumb pageName='Dashboard' />
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                     <div className=" p-3 rounded-xl shadow-[1px_1px_3px_rgba(28,36,52,.4)]">
@@ -57,6 +58,10 @@ const Home = () =>{
                     </div>
                 </div>
             </div>
+            <div className=" p-4 bg-white rounded-xl shadow-[1px_1px_3px_rgba(28,36,52,.4)]">
+                {/*<Table />*/}
+            </div>
+
         </div>
     );
 }

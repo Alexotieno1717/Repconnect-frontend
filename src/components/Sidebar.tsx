@@ -24,7 +24,7 @@ const Navigation = [
     },
     {
         'name' : 'Expenses',
-        'url' : "/expenses",
+        'url' : "/dashboard/expenses",
         'icon' : (
             <BanknotesIcon className="w-6 h-6 transition duration-75 group-hover:text-gray-900" />
         )

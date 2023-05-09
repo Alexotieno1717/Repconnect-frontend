@@ -3,26 +3,29 @@ import {useRoutes} from "react-router-dom";
 import Dashboard from "./pages";
 import Home from "./pages/home";
 import Task from "./pages/Task";
+import Expenses from "./pages/expenses";
 
 const CustomRoutes = () =>{
-    const routes = useRoutes([
+    return useRoutes([
         {
             path: '/dashboard',
-            element: <Dashboard />,
+            element: <Dashboard/>,
             children: [
                 {
                     path: 'home',
-                    element: <Home />
+                    element: <Home/>,
                 },
                 {
                     path: 'task-manager',
-                    element: <Task />
-                }
+                    element: <Task/>,
+                },
+                {
+                    path: 'expenses',
+                    element: <Expenses/>,
+                },
             ]
         }
-    ])
-
-    return routes;
+    ]);
 }
 
 export default CustomRoutes;
