@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import './App.css'
-import Sidebar from "./components/Sidebar";
 import {BrowserRouter} from "react-router-dom";
 import CustomRoutes from "./Routes";
 import {AuthContext} from "./context/auth-context";
 import {user} from "../types";
 import {ToastContainer} from "react-toastify";
+import Spinner from "./components/share-ui/spinners/Spinner";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -36,7 +36,7 @@ function App() {
 
     // preloading
     if(spinner) {
-        return <p>Loading....</p>
+        return <Spinner />
     }
 
   return (
