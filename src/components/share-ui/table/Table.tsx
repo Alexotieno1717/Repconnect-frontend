@@ -5,7 +5,12 @@ import {usePagination, useTable} from 'react-table';
 
 
 // @ts-ignore
-const Table = ({columns, data, loading, getTrProps}) => {
+interface TableProps {
+    className: unknown
+}
+
+// @ts-ignore
+const Table = ({ columns, data, loading }) => {
 
     const {
         getTableProps,
@@ -47,18 +52,27 @@ const Table = ({columns, data, loading, getTrProps}) => {
             {loading && (
                 <p>Loading......</p>
             )}
-            <div className="table-responsive">
-                <table id="react-table" {...getTableProps()} className="table table-hover">
+            <div className="flex flex-col overflow-x-auto">
+                <table id="react-table" {...getTableProps()} className="min-w-full divide-y divide-bodydark2">
                     <thead>
                     {headerGroups.map((headerGroup: { getHeaderGroupProps: () => JSX.IntrinsicAttributes & ClassAttributes<HTMLTableRowElement> & HTMLAttributes<HTMLTableRowElement>; headers: any[]; }, index: Key | null | undefined) => (
-                        <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                        <tr
+                            className='sm:table-row'
+                            {...headerGroup.getHeaderGroupProps()}
+                            key={index}>
                             {headerGroup.headers.map((column, index) => (
-                                <th {...column.getHeaderProps()} key={index}>{column.render('Header')}</th>
+                                <th
+                                    scope='col'
+                                    className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider"
+                                    {...column.getHeaderProps()} key={index}>{column.render('Header')}</th>
                             ))}
                         </tr>
                     ))}
                     </thead>
-                    <tbody {...getTableBodyProps()}>
+                    <tbody
+                        {...getTableBodyProps()}
+                        className="bg-white divide-y divide-meta-2"
+                    >
                     {page.map((row: {
                         getRowProps: () => JSX.IntrinsicAttributes & ClassAttributes<HTMLTableRowElement> & HTMLAttributes<HTMLTableRowElement>;
                         cells: any[];
@@ -67,7 +81,12 @@ const Table = ({columns, data, loading, getTrProps}) => {
                         return (
                             <tr {...row.getRowProps()} key={i}>
                                 {row.cells.map((cell, i) => {
-                                    return <td {...cell.getCellProps()} key={i} className="py-4">{cell.render('Cell')}</td>
+                                    return <td
+                                        {...cell.getCellProps()} key={i}
+                                        className="px-6 py-4 whitespace-nowrap"
+                                    >
+                                        {cell.render('Cell')}
+                                    </td>
                                 })}
                             </tr>
                         )
@@ -78,36 +97,23 @@ const Table = ({columns, data, loading, getTrProps}) => {
                     </tfoot>
                 </table>
                 <nav aria-label="Page navigation example">
-                    <ul className="pagination  justify-content-center mt-4 mb-1 pb-0">
-                        {/* <li className='me-md-auto'>
-                  Go to page:{' '}
-                  <input
-                    type="text"
-                    defaultValue={pageIndex + 1}
-                    onChange={e => {
-                      const page = e.target.value ? Number(e.target.value) - 1 : 0
-                      gotoPage(page)
-                    }}
-                    style={{ width: '50px' }}
-                    className='input-goto'
-                  />
-                </li> */}
-                        <li className='d-inline-flex me-md-auto'>
-                  <span  className='d-flex align-items-center'>
-                    Page &nbsp;{' '}
-                      <strong>
-                      {pageIndex + 1} of {pageOptions.length}
-                    </strong>{' '}
-                  </span>
+                    <ul className="py-3 flex items-center justify-between">
+                        <li className=''>
+                          <span  className='text-sm text-black'>
+                            Page &nbsp;{' '}
+                              <strong>
+                              {pageIndex + 1} of {pageOptions.length}
+                            </strong>{' '}
+                          </span>
                         </li>
-                        <li className='d-inline-flex me-md-auto'>
-                            <span className='d-flex align-items-center'>Show rows &nbsp;</span>{'  '}
+                        <li className=''>
+                            <span className=''>Show rows &nbsp;</span>{'  '}
                             <select
                                 value={pageSize}
                                 onChange={e => {
                                     setPageSize(Number(e.target.value))
                                 }}
-                                className="form-select" style={{width : '72px'}}>
+                                style={{width : '72px'}}>
                                 {[10, 20, 30, 40, 50].map(pageSize => (
                                     <option key={pageSize} value={pageSize}>
                                         {pageSize}
@@ -115,26 +121,28 @@ const Table = ({columns, data, loading, getTrProps}) => {
                                 ))}
                             </select>
                         </li>
-                        <li className={`page-item ${!canPreviousPage ? 'disabled' : '' }`}>
-                            <button className="page-link page-link-custom rounded-start" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                                Start
-                            </button>{' '}
-                        </li>
-                        <li className={`page-item ${!canPreviousPage ? 'disabled' : '' }`}>
-                            <button className="page-link page-link-custom"  onClick={() => previousPage()} disabled={!canPreviousPage}>
-                                Previous
-                            </button>{' '}
-                        </li>
-                        <li className={`page-item ${!canNextPage ? 'disabled' : '' }`}>
-                            <button className="page-link page-link-custom" onClick={() => nextPage()} disabled={!canNextPage}>
-                                Next
-                            </button>{' '}
-                        </li>
-                        <li className={`page-item ${!canNextPage ? 'disabled' : '' }`}>
-                            <button className="page-link page-link-custom rounded-end" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                                End
-                            </button>{' '}
-                        </li>
+                        <div className='flex justify-between'>
+                            <li className={`text-primary ${!canPreviousPage ? 'text-bodydark' : '' }`}>
+                                <button className="" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                                    Start
+                                </button>{' '}
+                            </li>
+                            <li className={`page-item ${!canPreviousPage ? 'text-bodydark' : '' }`}>
+                                <button className="pl-3"  onClick={() => previousPage()} disabled={!canPreviousPage}>
+                                    Previous
+                                </button>{' '}
+                            </li>
+                            <li className={`page-item ${!canNextPage ? 'text-bodydark' : '' }`}>
+                                <button className="pl-3" onClick={() => nextPage()} disabled={!canNextPage}>
+                                    Next
+                                </button>{' '}
+                            </li>
+                            <li className={`page-item ${!canNextPage ? 'text-bodydark' : '' }`}>
+                                <button className="pl-3" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                                    End
+                                </button>{' '}
+                            </li>
+                        </div>
 
                     </ul>
                 </nav>
