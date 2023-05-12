@@ -5,7 +5,7 @@ import {
     CheckBadgeIcon,
 } from "@heroicons/react/20/solid";
 import Breadcrumb from "../../components/Breadcrumb";
-import Table from "../../components/share-ui/table/Table";
+import DashboardTable from "../../components/dashboard/DashboardTable";
 
 const Home = () =>{
     return (
@@ -59,8 +59,9 @@ const Home = () =>{
                 </div>
             </div>
             <div className=" p-4 bg-white rounded-xl shadow-[1px_1px_3px_rgba(28,36,52,.4)]">
-                {/*<Table />*/}
+                <DashboardTable />
             </div>
+
 
         </div>
     );
