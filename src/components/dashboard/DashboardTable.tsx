@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {useAuth} from "../../context/auth-context";
 import Table from "../share-ui/table/Table";
 import {useQuery} from "@tanstack/react-query";
@@ -8,6 +8,8 @@ import axios from "axios";
 import {useGeolocated} from "react-geolocated";
 import Complete from "./task-actions/Complete";
 import Revisits from "./task-actions/Revisits";
+import {Menu, Transition} from "@headlessui/react";
+import {ChevronDownIcon} from "@heroicons/react/20/solid";
 
 const DashboardTable = () => {
 
@@ -137,61 +139,75 @@ const DashboardTable = () => {
             accessor: "status",
             Cell : (x: { row: { original: { status: string }; }; }) =>{
                 return (
-                    <div className='relative'>
-                        <button
-                            className={`overflow-hidden flex justify-center items-center text-white px-3 py-2 text-xs font-medium text-center rounded-lg hover:cursor-pointer ${getButtonColor(x.row.original.status)}`}
-                            onClick={() => setDropdownOpen(!dropdownOpen)}
-                        >
-                            {x.row.original.status.charAt(0).toUpperCase() + x.row.original.status.slice(1).toLowerCase()}
-                            <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"
-                                 aria-hidden="true">
-                                <path fillRule="evenodd"
-                                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                      clipRule="evenodd"/>
-                            </svg>
-                        </button>
-                        <div
-                            className={ `${dropdownOpen ? 'opacity-100 visible' : ' invisible opacity-0'} absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none` }
-                            role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
-                            <div className="py-1" role="none">
-                                <li
-                                   className="text-black block px-4 py-2 text-sm cursor-pointer" role="menuitem"
-                                   tabIndex={-1} id="menu-item-0"
-                                    onClick={() => {
-                                        chooseStatusTypeWithoutPosition(x.row.original)
-                                        console.log(x.row.original)
-                                    }}
+                    <div className="text-right">
+                        <Menu as="div" className="relative inline-block text-left">
+                            <div>
+                                <Menu.Button
+                                    className={`inline-flex w-full justify-center rounded-md bg-black px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ${getButtonColor(x.row.original.status)}`}
                                 >
-                                    <span onClick={handleShow}>
-                                        Revisits
-                                    </span>
-                                </li>
+                                    {x.row.original.status.charAt(0).toUpperCase() + x.row.original.status.slice(1).toLowerCase()}
 
-                                <li className="text-black block px-4 py-2 text-sm cursor-pointer" role="menuitem"
-                                   tabIndex={-1} id="menu-item-1"
-                                    onClick={() => chooseStatusType(x.row.original)}
-                                >
-                                    <span
-                                        onClick={handleCompleteShow}
-                                    >
-                                        Complete
-                                    </span>
-                                </li>
-
-                                <li className="text-black block px-4 py-2 text-sm cursor-pointer" role="menuitem"
-                                   tabIndex={-1} id="menu-item-2"
-                                   onClick={() => {
-                                       chooseStatusTypeWithoutPosition(x.row.original)
-                                       console.log(x.row.original)
-                                   }}
-                                ><span
-                                    onClick={handleCancelShow}
-                                >
-                                    Cancel
-                                </span></li>
+                                    <ChevronDownIcon
+                                        className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
+                                        aria-hidden="true"
+                                    />
+                                </Menu.Button>
                             </div>
-                        </div>
+                            <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95"
+                                enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75"
+                                leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95"
+                            >
+                                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-gray-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <div className="px-1 py-1 ">
+                                        <Menu.Item>
+                                            <li
+                                               className="text-black block px-4 py-2 text-sm cursor-pointer"
+                                                onClick={() => {
+                                                    chooseStatusTypeWithoutPosition(x.row.original)
+                                                    console.log(x.row.original)
+                                                }}
+                                            >
+                                                <span onClick={handleShow}>
+                                                    Revisits
+                                                </span>
+                                            </li>
+                                        </Menu.Item>
 
+                                        <Menu.Item>
+                                            <li className="text-black block px-4 py-2 text-sm cursor-pointer"
+                                                onClick={() => chooseStatusType(x.row.original)}
+                                            >
+                                                <span
+                                                    onClick={handleCompleteShow}
+                                                >
+                                                    Complete
+                                                </span>
+                                            </li>
+                                        </Menu.Item>
+
+                                        <Menu.Item>
+                                            <li className="text-black block px-4 py-2 text-sm cursor-pointer"
+                                               onClick={() => {
+                                                   chooseStatusTypeWithoutPosition(x.row.original)
+                                                   console.log(x.row.original)
+                                               }}
+                                            ><span
+                                                onClick={handleCancelShow}
+                                            >
+                                                Cancel
+                                            </span></li>
+                                        </Menu.Item>
+
+                                    </div>
+
+                                </Menu.Items>
+                            </Transition>
+                        </Menu>
                     </div>
                 )
             }
