@@ -79,7 +79,7 @@ const Table = ({ columns, data, loading }) => {
                     }, i: Key | null | undefined) => {
                         prepareRow(row)
                         return (
-                            <tr {...row.getRowProps()} key={i}>
+                            <tr {...row.getRowProps()} key={i} className='text-sm'>
                                 {row.cells.map((cell, i) => {
                                     return <td
                                         {...cell.getCellProps()} key={i}
@@ -97,7 +97,7 @@ const Table = ({ columns, data, loading }) => {
                     </tfoot>
                 </table>
                 <nav aria-label="Page navigation example">
-                    <ul className="py-3 flex items-center justify-between">
+                    <ul className="py-3 flex items-center justify-between mt-5">
                         <li className=''>
                           <span  className='text-sm text-black'>
                             Page &nbsp;{' '}
@@ -122,7 +122,7 @@ const Table = ({ columns, data, loading }) => {
                             </select>
                         </li>
                         <div className='flex justify-between'>
-                            <li className={`text-primary ${!canPreviousPage ? 'text-bodydark' : '' }`}>
+                            <li className={`page-item ${!canPreviousPage ? 'text-bodydark' : '' }`}>
                                 <button className="" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                                     Start
                                 </button>{' '}
